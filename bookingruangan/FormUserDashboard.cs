@@ -1,5 +1,4 @@
-﻿// File: FormUserDashboard.cs
-using System;
+﻿using System;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
@@ -31,7 +30,17 @@ namespace bookingruangan
             using (var conn = Connection.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT id, nama, jenis, kapasitas FROM mnjruang";
+
+                // Menampilkan ruangan yang belum dipinjam (berdasarkan data di tabel peminjaman)
+                string query = @"
+                    SELECT id, nama, jenis, kapasitas 
+                    FROM mnjruang 
+                    WHERE nama NOT IN (
+                        SELECT nama_ruang 
+                        FROM peminjaman 
+                        WHERE status = 'dipinjam'
+                    )";
+
                 using (var cmd = new MySqlCommand(query, conn))
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -70,8 +79,12 @@ namespace bookingruangan
             using (var conn = Connection.GetConnection())
             {
                 conn.Open();
-                string query = "INSERT INTO peminjaman (nama_peminjam, kelas_peminjam, tanggal, nama_ruang, jam_mulai, jam_selesai) " +
-                               "VALUES (@nama, @kelas, @tanggal, @ruang, @mulai, @selesai)";
+
+                // Simpan peminjaman ke tabel, dengan status 'dipinjam'
+                string query = @"INSERT INTO peminjaman 
+                                (nama_peminjam, kelas_peminjam, tanggal, nama_ruang, jam_mulai, jam_selesai, status) 
+                                VALUES 
+                                (@nama, @kelas, @tanggal, @ruang, @mulai, @selesai, 'dipinjam')";
                 using (var cmd = new MySqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@nama", _namaUser);
@@ -84,16 +97,24 @@ namespace bookingruangan
                     try
                     {
                         cmd.ExecuteNonQuery();
-                        MessageBox.Show("Peminjaman berhasil!");
                     }
                     catch (MySqlException ex)
                     {
                         MessageBox.Show("Gagal menyimpan peminjaman: " + ex.Message);
+                        return;
                     }
                 }
+
+                MessageBox.Show("Peminjaman berhasil!");
+                LoadDataRuangan(); // Refresh agar ruangan yang dipinjam tidak muncul lagi
             }
         }
 
+        private void btnRiwayat_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            new FormRiwayatPeminjaman(_namaUser).Show();
+        }
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
