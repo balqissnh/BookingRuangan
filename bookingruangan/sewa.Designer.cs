@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace bookingruangan
 {
-    partial class sewa
+    partial class sewa : Form
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -99,7 +99,7 @@ namespace bookingruangan
             textBox3.TabIndex = 7;
 
             // 
-            // button1 (Tambah)
+            // button1
             // 
             button1.Location = new Point(106, 252);
             button1.Name = "button1";
@@ -110,7 +110,7 @@ namespace bookingruangan
             button1.Click += button1_Click;
 
             // 
-            // button2 (Edit)
+            // button2
             // 
             button2.Location = new Point(303, 252);
             button2.Name = "button2";
@@ -121,7 +121,7 @@ namespace bookingruangan
             button2.Click += button2_Click;
 
             // 
-            // button3 (Hapus)
+            // button3
             // 
             button3.Location = new Point(528, 252);
             button3.Name = "button3";
@@ -142,7 +142,7 @@ namespace bookingruangan
             listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
 
             // 
-            // sewa
+            // sewa (Form)
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;

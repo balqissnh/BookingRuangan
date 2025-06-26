@@ -4,7 +4,7 @@ using bookingruangan.Controllers;
 using bookingruangan.Models;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace bookingruangan.Views
+namespace bookingruangan
 {
     public partial class sewa : Form
     {
