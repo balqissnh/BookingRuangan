@@ -6,7 +6,7 @@ namespace bookingruangan
 {
     public partial class FormRiwayatPeminjaman : Form
     {
-        private string _namaUser;
+        private readonly string _namaUser;
 
         public FormRiwayatPeminjaman(string namaUser)
         {
@@ -17,6 +17,16 @@ namespace bookingruangan
         private void FormRiwayatPeminjaman_Load(object sender, EventArgs e)
         {
             label1.Text = "Riwayat Peminjaman - " + _namaUser;
+
+            // ✅ Tambahkan kolom untuk listView
+            listView1.Columns.Clear();
+            listView1.Columns.Add("Tanggal", 100);
+            listView1.Columns.Add("Kelas", 100);
+            listView1.Columns.Add("Ruangan", 120);
+            listView1.Columns.Add("Jam Mulai", 100);
+            listView1.Columns.Add("Jam Selesai", 100);
+            listView1.Columns.Add("Status", 100);
+
             LoadRiwayat();
         }
 
@@ -81,7 +91,6 @@ namespace bookingruangan
             {
                 conn.Open();
 
-                // Update status di tabel peminjaman
                 string queryUpdate = @"UPDATE peminjaman 
                                        SET status='dikembalikan' 
                                        WHERE nama_peminjam=@nama 
@@ -96,31 +105,22 @@ namespace bookingruangan
                     cmd.Parameters.AddWithValue("@tanggal", tanggal);
                     cmd.Parameters.AddWithValue("@jam", jamMulai);
 
-                    try
+                    int result = cmd.ExecuteNonQuery();
+                    if (result > 0)
                     {
-                        int result = cmd.ExecuteNonQuery();
-                        if (result > 0)
+                        string updateRuang = "UPDATE mnjruang SET status='tersedia' WHERE nama = @ruang";
+                        using (var cmdRuang = new MySqlCommand(updateRuang, conn))
                         {
-                            MessageBox.Show("Ruangan berhasil dikembalikan.");
-
-                            // Update status ruangan kembali menjadi 'tersedia'
-                            string updateRuang = "UPDATE mnjruang SET status='tersedia' WHERE nama = @ruang";
-                            using (var cmdRuang = new MySqlCommand(updateRuang, conn))
-                            {
-                                cmdRuang.Parameters.AddWithValue("@ruang", ruang);
-                                cmdRuang.ExecuteNonQuery();
-                            }
-
-                            LoadRiwayat();
+                            cmdRuang.Parameters.AddWithValue("@ruang", ruang);
+                            cmdRuang.ExecuteNonQuery();
                         }
-                        else
-                        {
-                            MessageBox.Show("Data tidak ditemukan atau sudah dikembalikan.");
-                        }
+
+                        MessageBox.Show("Ruangan berhasil dikembalikan.");
+                        LoadRiwayat();
                     }
-                    catch (MySqlException ex)
+                    else
                     {
-                        MessageBox.Show("Terjadi kesalahan: " + ex.Message);
+                        MessageBox.Show("Data tidak ditemukan atau sudah dikembalikan.");
                     }
                 }
             }
@@ -134,7 +134,7 @@ namespace bookingruangan
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            // Tidak digunakan
         }
     }
 }

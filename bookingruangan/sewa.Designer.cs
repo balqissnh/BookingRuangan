@@ -31,9 +31,7 @@ namespace bookingruangan
             button2 = new Button();
             button3 = new Button();
             listView1 = new ListView();
-
             SuspendLayout();
-
             // 
             // label1
             // 
@@ -43,7 +41,6 @@ namespace bookingruangan
             label1.Size = new Size(179, 25);
             label1.TabIndex = 0;
             label1.Text = "Manajemen Ruangan";
-
             // 
             // label2
             // 
@@ -53,7 +50,6 @@ namespace bookingruangan
             label2.Size = new Size(134, 25);
             label2.TabIndex = 1;
             label2.Text = "Nama Ruangan";
-
             // 
             // label3
             // 
@@ -63,7 +59,6 @@ namespace bookingruangan
             label3.Size = new Size(49, 25);
             label3.TabIndex = 2;
             label3.Text = "Jenis";
-
             // 
             // label4
             // 
@@ -73,7 +68,6 @@ namespace bookingruangan
             label4.Size = new Size(86, 25);
             label4.TabIndex = 3;
             label4.Text = "Kapasitas";
-
             // 
             // textBox1
             // 
@@ -81,7 +75,6 @@ namespace bookingruangan
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(150, 31);
             textBox1.TabIndex = 5;
-
             // 
             // textBox2
             // 
@@ -89,7 +82,6 @@ namespace bookingruangan
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(150, 31);
             textBox2.TabIndex = 6;
-
             // 
             // textBox3
             // 
@@ -97,7 +89,6 @@ namespace bookingruangan
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(150, 31);
             textBox3.TabIndex = 7;
-
             // 
             // button1
             // 
@@ -108,7 +99,6 @@ namespace bookingruangan
             button1.Text = "Tambah";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
-
             // 
             // button2
             // 
@@ -119,7 +109,6 @@ namespace bookingruangan
             button2.Text = "Edit";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
-
             // 
             // button3
             // 
@@ -130,23 +119,21 @@ namespace bookingruangan
             button3.Text = "Hapus";
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
-
             // 
             // listView1
             // 
-            listView1.Location = new Point(0, 306);
+            listView1.Location = new Point(12, 305);
             listView1.Name = "listView1";
-            listView1.Size = new Size(800, 146);
+            listView1.Size = new Size(684, 252);
             listView1.TabIndex = 12;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
-
             // 
-            // sewa (Form)
+            // sewa
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(708, 644);
             Controls.Add(listView1);
             Controls.Add(button3);
             Controls.Add(button2);
@@ -159,6 +146,7 @@ namespace bookingruangan
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "sewa";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Sewa Ruangan";
             Load += sewa_Load;
             ResumeLayout(false);

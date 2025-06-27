@@ -6,21 +6,28 @@ namespace bookingruangan
 {
     public partial class FormUserDashboard : Form
     {
-        private string _namaUser;
+        private readonly string _namaUser;
 
         public FormUserDashboard(string namaUser)
         {
             InitializeComponent();
             _namaUser = namaUser;
 
-            // Atur ukuran form
-            this.Width = 600;
-            this.Height = 500;
+            this.Width = 700;
+            this.Height = 700;
         }
 
         private void FormUserDashboard_Load(object sender, EventArgs e)
         {
             label1.Text = "Selamat datang, " + _namaUser + "!";
+
+            // ✅ Tambah kolom ListView agar data tampil
+            listView1.Columns.Clear();
+            listView1.Columns.Add("ID", 50);
+            listView1.Columns.Add("Nama Ruang", 150);
+            listView1.Columns.Add("Jenis", 150);
+            listView1.Columns.Add("Kapasitas", 100);
+
             LoadDataRuangan();
         }
 
@@ -31,15 +38,10 @@ namespace bookingruangan
             {
                 conn.Open();
 
-                // Menampilkan ruangan yang belum dipinjam (berdasarkan data di tabel peminjaman)
                 string query = @"
                     SELECT id, nama, jenis, kapasitas 
                     FROM mnjruang 
-                    WHERE nama NOT IN (
-                        SELECT nama_ruang 
-                        FROM peminjaman 
-                        WHERE status = 'dipinjam'
-                    )";
+                    WHERE status = 'tersedia'";
 
                 using (var cmd = new MySqlCommand(query, conn))
                 using (var reader = cmd.ExecuteReader())
@@ -80,11 +82,12 @@ namespace bookingruangan
             {
                 conn.Open();
 
-                // Simpan peminjaman ke tabel, dengan status 'dipinjam'
+                // Simpan peminjaman
                 string query = @"INSERT INTO peminjaman 
-                                (nama_peminjam, kelas_peminjam, tanggal, nama_ruang, jam_mulai, jam_selesai, status) 
-                                VALUES 
-                                (@nama, @kelas, @tanggal, @ruang, @mulai, @selesai, 'dipinjam')";
+                    (nama_peminjam, kelas_peminjam, tanggal, nama_ruang, jam_mulai, jam_selesai, status) 
+                    VALUES 
+                    (@nama, @kelas, @tanggal, @ruang, @mulai, @selesai, 'dipinjam')";
+
                 using (var cmd = new MySqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@nama", _namaUser);
@@ -93,20 +96,19 @@ namespace bookingruangan
                     cmd.Parameters.AddWithValue("@ruang", namaRuangan);
                     cmd.Parameters.AddWithValue("@mulai", jamMulai);
                     cmd.Parameters.AddWithValue("@selesai", jamSelesai);
+                    cmd.ExecuteNonQuery();
+                }
 
-                    try
-                    {
-                        cmd.ExecuteNonQuery();
-                    }
-                    catch (MySqlException ex)
-                    {
-                        MessageBox.Show("Gagal menyimpan peminjaman: " + ex.Message);
-                        return;
-                    }
+                // Update status ruang
+                string updateStatus = "UPDATE mnjruang SET status = 'dipinjam' WHERE nama = @ruang";
+                using (var cmdUpdate = new MySqlCommand(updateStatus, conn))
+                {
+                    cmdUpdate.Parameters.AddWithValue("@ruang", namaRuangan);
+                    cmdUpdate.ExecuteNonQuery();
                 }
 
                 MessageBox.Show("Peminjaman berhasil!");
-                LoadDataRuangan(); // Refresh agar ruangan yang dipinjam tidak muncul lagi
+                LoadDataRuangan();
             }
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using bookingruangan.Controllers;
+using Microsoft.Win32;
 
 namespace bookingruangan
 {
@@ -14,7 +15,6 @@ namespace bookingruangan
             _controller = new LoginController(this);
         }
 
-        // Optional, tidak wajib diisi
         private void Form1_Load(object sender, EventArgs e)
         {
             // Boleh dikosongkan
@@ -25,19 +25,19 @@ namespace bookingruangan
             string username = txtUsername.Text.Trim();
             string password = txtPassword.Text.Trim();
 
-            string result = _controller.HandleLogin(username, password); // Bisa "admin", atau nama user, atau null
+            string result = _controller.HandleLogin(username, password);
 
             if (result == "admin")
             {
                 MessageBox.Show("Login Admin Berhasil");
                 this.Hide();
-                new sewa().Show(); // Form Admin
+                new sewa().Show();
             }
-            else if (!string.IsNullOrEmpty(result)) // berarti user berhasil login
+            else if (!string.IsNullOrEmpty(result))
             {
                 MessageBox.Show("Login User Berhasil");
                 this.Hide();
-                new FormUserDashboard(result).Show(); // Kirim nama user
+                new FormUserDashboard(result).Show();
             }
             else
             {
@@ -47,7 +47,13 @@ namespace bookingruangan
 
         private void label1_Click(object sender, EventArgs e)
         {
-            // Dikosongkan saja kalau tidak digunakan
+            // Tidak digunakan
+        }
+
+        private void linkRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            this.Hide();
+            new FormRegister().Show(); // Ganti dengan nama form register milikmu
         }
     }
 }

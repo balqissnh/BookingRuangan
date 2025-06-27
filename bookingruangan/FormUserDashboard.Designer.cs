@@ -17,7 +17,6 @@
         private System.Windows.Forms.Label lblTanggal;
         private System.Windows.Forms.Button btnRiwayat;
 
-
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -27,124 +26,100 @@
 
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.btnLogout = new System.Windows.Forms.Button();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.btnPinjam = new System.Windows.Forms.Button();
-            this.dtpMulai = new System.Windows.Forms.DateTimePicker();
-            this.dtpSelesai = new System.Windows.Forms.DateTimePicker();
-            this.lblMulai = new System.Windows.Forms.Label();
-            this.lblSelesai = new System.Windows.Forms.Label();
-            this.txtKelas = new System.Windows.Forms.TextBox();
-            this.lblKelas = new System.Windows.Forms.Label();
-            this.dtpTanggal = new System.Windows.Forms.DateTimePicker();
-            this.lblTanggal = new System.Windows.Forms.Label();
+            label1 = new Label();
+            btnLogout = new Button();
+            listView1 = new ListView();
+            btnPinjam = new Button();
+            dtpMulai = new DateTimePicker();
+            dtpSelesai = new DateTimePicker();
+            lblMulai = new Label();
+            lblSelesai = new Label();
+            txtKelas = new TextBox();
+            lblKelas = new Label();
+            dtpTanggal = new DateTimePicker();
+            lblTanggal = new Label();
+            btnRiwayat = new Button();
+            SuspendLayout();
 
-            this.SuspendLayout();
+            label1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label1.Location = new Point(91, 17);
+            label1.Size = new Size(520, 40);
+            label1.Text = "Daftar Ruangan Tersedia";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
 
-            // label1
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(12, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(520, 40);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Daftar Ruangan Tersedia";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            btnLogout.Location = new Point(266, 553);
+            btnLogout.Size = new Size(120, 35);
+            btnLogout.Text = "Logout";
+            btnLogout.Click += btnLogout_Click;
 
-            // listView1
-            this.listView1.Location = new System.Drawing.Point(30, 70);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(500, 180);
-            this.listView1.View = System.Windows.Forms.View.Details;
-            this.listView1.FullRowSelect = true;
-            this.listView1.GridLines = true;
-            this.listView1.Columns.Add("ID", 40);
-            this.listView1.Columns.Add("Nama Ruangan", 160);
-            this.listView1.Columns.Add("Jenis", 140);
-            this.listView1.Columns.Add("Kapasitas", 100);
+            listView1.FullRowSelect = true;
+            listView1.GridLines = true;
+            listView1.Location = new Point(31, 70);
+            listView1.Size = new Size(637, 250);
+            listView1.View = View.Details;
 
-            // lblKelas
-            this.lblKelas.Text = "Kelas Peminjam:";
-            this.lblKelas.Location = new System.Drawing.Point(30, 265);
-            this.lblKelas.Size = new System.Drawing.Size(120, 25);
+            btnPinjam.Location = new Point(57, 553);
+            btnPinjam.Size = new Size(120, 35);
+            btnPinjam.Text = "Pinjam";
+            btnPinjam.Click += btnPinjam_Click;
 
-            // txtKelas
-            this.txtKelas.Location = new System.Drawing.Point(160, 262);
-            this.txtKelas.Size = new System.Drawing.Size(180, 31);
+            dtpMulai.Format = DateTimePickerFormat.Time;
+            dtpMulai.Location = new Point(161, 448);
+            dtpMulai.ShowUpDown = true;
+            dtpMulai.Size = new Size(180, 31);
 
-            // lblTanggal
-            this.lblTanggal.Text = "Tanggal Pinjam:";
-            this.lblTanggal.Location = new System.Drawing.Point(30, 300);
-            this.lblTanggal.Size = new System.Drawing.Size(120, 25);
+            dtpSelesai.Format = DateTimePickerFormat.Time;
+            dtpSelesai.Location = new Point(500, 451);
+            dtpSelesai.ShowUpDown = true;
+            dtpSelesai.Size = new Size(168, 31);
 
-            // dtpTanggal
-            this.dtpTanggal.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpTanggal.Location = new System.Drawing.Point(160, 297);
-            this.dtpTanggal.Size = new System.Drawing.Size(180, 31);
+            lblMulai.Location = new Point(33, 451);
+            lblMulai.Size = new Size(100, 25);
+            lblMulai.Text = "Jam Mulai";
 
-            // lblMulai
-            this.lblMulai.Text = "Jam Mulai:";
-            this.lblMulai.Location = new System.Drawing.Point(30, 335);
-            this.lblMulai.Size = new System.Drawing.Size(100, 25);
+            lblSelesai.Location = new Point(371, 454);
+            lblSelesai.Size = new Size(113, 28);
+            lblSelesai.Text = "Jam Selesai";
 
-            // dtpMulai
-            this.dtpMulai.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtpMulai.ShowUpDown = true;
-            this.dtpMulai.Location = new System.Drawing.Point(130, 332);
-            this.dtpMulai.Size = new System.Drawing.Size(100, 31);
+            txtKelas.Location = new Point(161, 338);
+            txtKelas.Size = new Size(180, 31);
 
-            // lblSelesai
-            this.lblSelesai.Text = "Jam Selesai:";
-            this.lblSelesai.Location = new System.Drawing.Point(250, 335);
-            this.lblSelesai.Size = new System.Drawing.Size(100, 25);
+            lblKelas.Location = new Point(31, 341);
+            lblKelas.Size = new Size(120, 25);
+            lblKelas.Text = "Kelas Peminjam:";
 
-            // dtpSelesai
-            this.dtpSelesai.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtpSelesai.ShowUpDown = true;
-            this.dtpSelesai.Location = new System.Drawing.Point(350, 332);
-            this.dtpSelesai.Size = new System.Drawing.Size(100, 31);
+            dtpTanggal.Format = DateTimePickerFormat.Short;
+            dtpTanggal.Location = new Point(161, 396);
+            dtpTanggal.Size = new Size(180, 31);
 
-            // btnPinjam
-            this.btnPinjam.Text = "Pinjam";
-            this.btnPinjam.Location = new System.Drawing.Point(130, 375);
-            this.btnPinjam.Size = new System.Drawing.Size(120, 35);
-            this.btnPinjam.Click += new System.EventHandler(this.btnPinjam_Click);
+            lblTanggal.Location = new Point(31, 399);
+            lblTanggal.Size = new Size(120, 25);
+            lblTanggal.Text = "Tanggal Pinjam:";
 
-            // btnRiwayat
-            this.btnRiwayat = new System.Windows.Forms.Button();
-            this.btnRiwayat.Text = "Lihat Riwayat";
-            this.btnRiwayat.Location = new System.Drawing.Point(400, 370);
-            this.btnRiwayat.Size = new System.Drawing.Size(100, 35);
-            this.btnRiwayat.Click += new System.EventHandler(this.btnRiwayat_Click);
-            this.Controls.Add(this.btnRiwayat);
+            btnRiwayat.Location = new Point(490, 553);
+            btnRiwayat.Size = new Size(153, 35);
+            btnRiwayat.Text = "Lihat Riwayat";
+            btnRiwayat.Click += btnRiwayat_Click;
 
-            // btnLogout
-            this.btnLogout.Text = "Logout";
-            this.btnLogout.Location = new System.Drawing.Point(270, 375);
-            this.btnLogout.Size = new System.Drawing.Size(120, 35);
-            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
-
-            // FormUserDashboard
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(560, 440);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.listView1);
-            this.Controls.Add(this.lblKelas);
-            this.Controls.Add(this.txtKelas);
-            this.Controls.Add(this.lblTanggal);
-            this.Controls.Add(this.dtpTanggal);
-            this.Controls.Add(this.lblMulai);
-            this.Controls.Add(this.dtpMulai);
-            this.Controls.Add(this.lblSelesai);
-            this.Controls.Add(this.dtpSelesai);
-            this.Controls.Add(this.btnPinjam);
-            this.Controls.Add(this.btnLogout);
-            this.Name = "FormUserDashboard";
-            this.Text = "Dashboard User - Booking Ruangan";
-            this.Load += new System.EventHandler(this.FormUserDashboard_Load);
-            this.ResumeLayout(false);
-            this.PerformLayout(); // Penting agar layout tampil rapi
+            ClientSize = new Size(708, 644);
+            Controls.Add(btnRiwayat);
+            Controls.Add(label1);
+            Controls.Add(listView1);
+            Controls.Add(lblKelas);
+            Controls.Add(txtKelas);
+            Controls.Add(lblTanggal);
+            Controls.Add(dtpTanggal);
+            Controls.Add(lblMulai);
+            Controls.Add(dtpMulai);
+            Controls.Add(lblSelesai);
+            Controls.Add(dtpSelesai);
+            Controls.Add(btnPinjam);
+            Controls.Add(btnLogout);
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Dashboard User - Booking Ruangan";
+            Load += FormUserDashboard_Load;
+            ResumeLayout(false);
+            PerformLayout();
         }
     }
 }

@@ -36,12 +36,13 @@
             txtPassword = new TextBox();
             btnRegister = new Button();
             lblLogin = new LinkLabel();
+            label1 = new Label();
             SuspendLayout();
             // 
             // lblNama
             // 
             lblNama.AutoSize = true;
-            lblNama.Location = new Point(43, 50);
+            lblNama.Location = new Point(41, 139);
             lblNama.Margin = new Padding(4, 0, 4, 0);
             lblNama.Name = "lblNama";
             lblNama.Size = new Size(135, 25);
@@ -51,7 +52,7 @@
             // lblNpm
             // 
             lblNpm.AutoSize = true;
-            lblNpm.Location = new Point(43, 117);
+            lblNpm.Location = new Point(41, 206);
             lblNpm.Margin = new Padding(4, 0, 4, 0);
             lblNpm.Name = "lblNpm";
             lblNpm.Size = new Size(55, 25);
@@ -61,7 +62,7 @@
             // lblUsername
             // 
             lblUsername.AutoSize = true;
-            lblUsername.Location = new Point(43, 183);
+            lblUsername.Location = new Point(41, 272);
             lblUsername.Margin = new Padding(4, 0, 4, 0);
             lblUsername.Name = "lblUsername";
             lblUsername.Size = new Size(95, 25);
@@ -71,7 +72,7 @@
             // lblPassword
             // 
             lblPassword.AutoSize = true;
-            lblPassword.Location = new Point(43, 250);
+            lblPassword.Location = new Point(41, 339);
             lblPassword.Margin = new Padding(4, 0, 4, 0);
             lblPassword.Name = "lblPassword";
             lblPassword.Size = new Size(91, 25);
@@ -80,7 +81,7 @@
             // 
             // txtNama
             // 
-            txtNama.Location = new Point(214, 45);
+            txtNama.Location = new Point(212, 134);
             txtNama.Margin = new Padding(4, 5, 4, 5);
             txtNama.Name = "txtNama";
             txtNama.Size = new Size(284, 31);
@@ -88,7 +89,7 @@
             // 
             // txtNpm
             // 
-            txtNpm.Location = new Point(214, 112);
+            txtNpm.Location = new Point(212, 201);
             txtNpm.Margin = new Padding(4, 5, 4, 5);
             txtNpm.Name = "txtNpm";
             txtNpm.Size = new Size(284, 31);
@@ -96,7 +97,7 @@
             // 
             // txtUsername
             // 
-            txtUsername.Location = new Point(214, 178);
+            txtUsername.Location = new Point(212, 267);
             txtUsername.Margin = new Padding(4, 5, 4, 5);
             txtUsername.Name = "txtUsername";
             txtUsername.Size = new Size(284, 31);
@@ -104,7 +105,7 @@
             // 
             // txtPassword
             // 
-            txtPassword.Location = new Point(214, 245);
+            txtPassword.Location = new Point(212, 334);
             txtPassword.Margin = new Padding(4, 5, 4, 5);
             txtPassword.Name = "txtPassword";
             txtPassword.Size = new Size(284, 31);
@@ -113,7 +114,7 @@
             // 
             // btnRegister
             // 
-            btnRegister.Location = new Point(214, 317);
+            btnRegister.Location = new Point(212, 485);
             btnRegister.Margin = new Padding(4, 5, 4, 5);
             btnRegister.Name = "btnRegister";
             btnRegister.Size = new Size(286, 50);
@@ -125,7 +126,7 @@
             // lblLogin
             // 
             lblLogin.AutoSize = true;
-            lblLogin.Location = new Point(214, 383);
+            lblLogin.Location = new Point(245, 556);
             lblLogin.Margin = new Padding(4, 0, 4, 0);
             lblLogin.Name = "lblLogin";
             lblLogin.Size = new Size(216, 25);
@@ -134,11 +135,22 @@
             lblLogin.Text = "Sudah punya akun? Login";
             lblLogin.LinkClicked += lblLogin_LinkClicked;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(281, 44);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(75, 25);
+            label1.TabIndex = 10;
+            label1.Text = "Register";
+            // 
             // FormRegister
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(571, 467);
+            ClientSize = new Size(708, 644);
+            Controls.Add(label1);
             Controls.Add(lblNama);
             Controls.Add(txtNama);
             Controls.Add(lblNpm);
@@ -151,10 +163,12 @@
             Controls.Add(lblLogin);
             Margin = new Padding(4, 5, 4, 5);
             Name = "FormRegister";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Form Registrasi";
             Load += FormRegister_Load;
             ResumeLayout(false);
             PerformLayout();
         }
+        private Label label1;
     }
 }

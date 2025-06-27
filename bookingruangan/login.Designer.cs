@@ -3,13 +3,18 @@
     partial class login
     {
         private System.ComponentModel.IContainer components = null;
+        private System.Windows.Forms.TextBox txtUsername;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.Button btnLogin;
+        private System.Windows.Forms.LinkLabel linkRegister;
 
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
             base.Dispose(disposing);
         }
 
@@ -23,6 +28,7 @@
             label3 = new Label();
             txtPassword = new TextBox();
             btnLogin = new Button();
+            linkRegister = new LinkLabel();
             SuspendLayout();
             // 
             // txtUsername
@@ -70,7 +76,7 @@
             // 
             // btnLogin
             // 
-            btnLogin.Location = new Point(333, 321);
+            btnLogin.Location = new Point(313, 451);
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(112, 34);
             btnLogin.TabIndex = 5;
@@ -78,18 +84,31 @@
             btnLogin.UseVisualStyleBackColor = true;
             btnLogin.Click += btnLogin_Click;
             // 
+            // linkRegister
+            // 
+            linkRegister.AutoSize = true;
+            linkRegister.Location = new Point(232, 500);
+            linkRegister.Name = "linkRegister";
+            linkRegister.Size = new Size(271, 25);
+            linkRegister.TabIndex = 6;
+            linkRegister.TabStop = true;
+            linkRegister.Text = "Belum punya akun? Daftar di sini";
+            linkRegister.LinkClicked += linkRegister_LinkClicked;
+            // 
             // login
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(708, 644);
             Controls.Add(btnLogin);
             Controls.Add(txtPassword);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(txtUsername);
+            Controls.Add(linkRegister);
             Name = "login";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             Load += Form1_Load;
             ResumeLayout(false);
@@ -97,12 +116,5 @@
         }
 
         #endregion
-
-        private TextBox txtUsername;
-        private Label label1;
-        private Label label2;
-        private Label label3;
-        private TextBox txtPassword;
-        private Button btnLogin;
     }
 }
