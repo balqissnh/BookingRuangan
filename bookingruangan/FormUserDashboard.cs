@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
+using bookingruangan.Controllers;
+using bookingruangan.Models;
 
 namespace bookingruangan
 {
     public partial class FormUserDashboard : Form
     {
         private readonly string _namaUser;
+        private readonly FormUserDashboardController _controller;
 
         public FormUserDashboard(string namaUser)
         {
             InitializeComponent();
             _namaUser = namaUser;
+            _controller = new FormUserDashboardController(_namaUser);
 
             this.Width = 700;
             this.Height = 700;
@@ -21,7 +24,6 @@ namespace bookingruangan
         {
             label1.Text = "Selamat datang, " + _namaUser + "!";
 
-            // ✅ Tambah kolom ListView agar data tampil
             listView1.Columns.Clear();
             listView1.Columns.Add("ID", 50);
             listView1.Columns.Add("Nama Ruang", 150);
@@ -34,27 +36,15 @@ namespace bookingruangan
         private void LoadDataRuangan()
         {
             listView1.Items.Clear();
-            using (var conn = Connection.GetConnection())
+            var dataRuangan = _controller.GetRuanganTersedia();
+
+            foreach (var ruang in dataRuangan)
             {
-                conn.Open();
-
-                string query = @"
-                    SELECT id, nama, jenis, kapasitas 
-                    FROM mnjruang 
-                    WHERE status = 'tersedia'";
-
-                using (var cmd = new MySqlCommand(query, conn))
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var item = new ListViewItem(reader["id"].ToString());
-                        item.SubItems.Add(reader["nama"].ToString());
-                        item.SubItems.Add(reader["jenis"].ToString());
-                        item.SubItems.Add(reader["kapasitas"].ToString());
-                        listView1.Items.Add(item);
-                    }
-                }
+                var item = new ListViewItem(ruang.Id.ToString());
+                item.SubItems.Add(ruang.Nama);
+                item.SubItems.Add(ruang.Jenis);
+                item.SubItems.Add(ruang.Kapasitas.ToString());
+                listView1.Items.Add(item);
             }
         }
 
@@ -78,37 +68,16 @@ namespace bookingruangan
                 return;
             }
 
-            using (var conn = Connection.GetConnection())
+            bool berhasil = _controller.PinjamRuangan(kelasPeminjam, tanggalPinjam, namaRuangan, jamMulai, jamSelesai);
+
+            if (berhasil)
             {
-                conn.Open();
-
-                // Simpan peminjaman
-                string query = @"INSERT INTO peminjaman 
-                    (nama_peminjam, kelas_peminjam, tanggal, nama_ruang, jam_mulai, jam_selesai, status) 
-                    VALUES 
-                    (@nama, @kelas, @tanggal, @ruang, @mulai, @selesai, 'dipinjam')";
-
-                using (var cmd = new MySqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@nama", _namaUser);
-                    cmd.Parameters.AddWithValue("@kelas", kelasPeminjam);
-                    cmd.Parameters.AddWithValue("@tanggal", tanggalPinjam);
-                    cmd.Parameters.AddWithValue("@ruang", namaRuangan);
-                    cmd.Parameters.AddWithValue("@mulai", jamMulai);
-                    cmd.Parameters.AddWithValue("@selesai", jamSelesai);
-                    cmd.ExecuteNonQuery();
-                }
-
-                // Update status ruang
-                string updateStatus = "UPDATE mnjruang SET status = 'dipinjam' WHERE nama = @ruang";
-                using (var cmdUpdate = new MySqlCommand(updateStatus, conn))
-                {
-                    cmdUpdate.Parameters.AddWithValue("@ruang", namaRuangan);
-                    cmdUpdate.ExecuteNonQuery();
-                }
-
                 MessageBox.Show("Peminjaman berhasil!");
                 LoadDataRuangan();
+            }
+            else
+            {
+                MessageBox.Show("Gagal meminjam ruangan.");
             }
         }
 

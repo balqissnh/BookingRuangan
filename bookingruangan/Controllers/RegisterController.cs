@@ -1,28 +1,32 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using bookingruangan.Helpers;
 using MySql.Data.MySqlClient;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace bookingruangan
+namespace bookingruangan.Controllers
 {
-    public partial class FormRegister : Form
+    public class RegisterController
     {
-        public FormRegister()
+        private FormRegister _form;
+
+        public RegisterController(FormRegister form)
         {
-            InitializeComponent();
+            _form = form;
         }
 
-        private void btnRegister_Click(object sender, EventArgs e)
+        public void HandleRegister()
         {
-            string namaLengkap = txtNama.Text.Trim();
-            string npm = txtNpm.Text.Trim();
-            string username = txtUsername.Text.Trim();
-            string password = txtPassword.Text.Trim();
+            string namaLengkap = _form.GetNama();
+            string npm = _form.GetNpm();
+            string username = _form.GetUsername();
+            string password = _form.GetPassword();
 
-            if (namaLengkap == "" || npm == "" || username == "" || password == "")
+            if (string.IsNullOrWhiteSpace(namaLengkap) ||
+                string.IsNullOrWhiteSpace(npm) ||
+                string.IsNullOrWhiteSpace(username) ||
+                string.IsNullOrWhiteSpace(password))
             {
-                MessageBox.Show("Semua kolom harus diisi!");
+                _form.ShowMessage("Semua kolom harus diisi!");
                 return;
             }
 
@@ -42,22 +46,15 @@ namespace bookingruangan
                     try
                     {
                         cmd.ExecuteNonQuery();
-                        MessageBox.Show("Registrasi berhasil. Silakan login.");
-                        this.Hide();
-                        new login().Show();
+                        _form.ShowMessage("Registrasi berhasil. Silakan login.");
+                        _form.RedirectToLogin();
                     }
                     catch (MySqlException ex)
                     {
-                        MessageBox.Show("Registrasi gagal: " + ex.Message);
+                        _form.ShowMessage("Registrasi gagal: " + ex.Message);
                     }
                 }
             }
-        }
-
-        private void lblLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            this.Hide();
-            new login().Show();
         }
 
         private string HashPassword(string password)
@@ -70,11 +67,6 @@ namespace bookingruangan
                     builder.Append(b.ToString("x2"));
                 return builder.ToString();
             }
-        }
-
-        private void FormRegister_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

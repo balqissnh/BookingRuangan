@@ -1,24 +1,26 @@
 ﻿using System;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
+using bookingruangan.Controllers;
+using bookingruangan.Models;
 
 namespace bookingruangan
 {
     public partial class FormRiwayatPeminjaman : Form
     {
         private readonly string _namaUser;
+        private readonly FormRiwayatPeminjamanController _controller;
 
         public FormRiwayatPeminjaman(string namaUser)
         {
             InitializeComponent();
             _namaUser = namaUser;
+            _controller = new FormRiwayatPeminjamanController(_namaUser);
         }
 
         private void FormRiwayatPeminjaman_Load(object sender, EventArgs e)
         {
             label1.Text = "Riwayat Peminjaman - " + _namaUser;
 
-            // ✅ Tambahkan kolom untuk listView
             listView1.Columns.Clear();
             listView1.Columns.Add("Tanggal", 100);
             listView1.Columns.Add("Kelas", 100);
@@ -33,33 +35,17 @@ namespace bookingruangan
         private void LoadRiwayat()
         {
             listView1.Items.Clear();
-            using (var conn = Connection.GetConnection())
+            var riwayatList = _controller.GetRiwayat();
+
+            foreach (var data in riwayatList)
             {
-                conn.Open();
-
-                string query = @"
-                    SELECT tanggal, kelas_peminjam, nama_ruang, jam_mulai, jam_selesai, status 
-                    FROM peminjaman 
-                    WHERE nama_peminjam = @nama 
-                    ORDER BY tanggal DESC";
-
-                using (var cmd = new MySqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@nama", _namaUser);
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var item = new ListViewItem(Convert.ToDateTime(reader["tanggal"]).ToString("yyyy-MM-dd"));
-                            item.SubItems.Add(reader["kelas_peminjam"].ToString());
-                            item.SubItems.Add(reader["nama_ruang"].ToString());
-                            item.SubItems.Add(reader["jam_mulai"].ToString());
-                            item.SubItems.Add(reader["jam_selesai"].ToString());
-                            item.SubItems.Add(reader["status"].ToString());
-                            listView1.Items.Add(item);
-                        }
-                    }
-                }
+                var item = new ListViewItem(data.Tanggal.ToString("yyyy-MM-dd"));
+                item.SubItems.Add(data.Kelas);
+                item.SubItems.Add(data.Ruangan);
+                item.SubItems.Add(data.JamMulai);
+                item.SubItems.Add(data.JamSelesai);
+                item.SubItems.Add(data.Status);
+                listView1.Items.Add(item);
             }
         }
 
@@ -84,45 +70,18 @@ namespace bookingruangan
 
             var confirm = MessageBox.Show("Apakah Anda yakin ingin mengembalikan ruangan ini?",
                             "Konfirmasi", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (confirm == DialogResult.No)
-                return;
+            if (confirm == DialogResult.No) return;
 
-            using (var conn = Connection.GetConnection())
+            bool berhasil = _controller.Kembalikan(tanggal, ruang, jamMulai);
+
+            if (berhasil)
             {
-                conn.Open();
-
-                string queryUpdate = @"UPDATE peminjaman 
-                                       SET status='dikembalikan' 
-                                       WHERE nama_peminjam=@nama 
-                                       AND nama_ruang=@ruang 
-                                       AND tanggal=@tanggal 
-                                       AND jam_mulai=@jam";
-
-                using (var cmd = new MySqlCommand(queryUpdate, conn))
-                {
-                    cmd.Parameters.AddWithValue("@nama", _namaUser);
-                    cmd.Parameters.AddWithValue("@ruang", ruang);
-                    cmd.Parameters.AddWithValue("@tanggal", tanggal);
-                    cmd.Parameters.AddWithValue("@jam", jamMulai);
-
-                    int result = cmd.ExecuteNonQuery();
-                    if (result > 0)
-                    {
-                        string updateRuang = "UPDATE mnjruang SET status='tersedia' WHERE nama = @ruang";
-                        using (var cmdRuang = new MySqlCommand(updateRuang, conn))
-                        {
-                            cmdRuang.Parameters.AddWithValue("@ruang", ruang);
-                            cmdRuang.ExecuteNonQuery();
-                        }
-
-                        MessageBox.Show("Ruangan berhasil dikembalikan.");
-                        LoadRiwayat();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Data tidak ditemukan atau sudah dikembalikan.");
-                    }
-                }
+                MessageBox.Show("Ruangan berhasil dikembalikan.");
+                LoadRiwayat();
+            }
+            else
+            {
+                MessageBox.Show("Data tidak ditemukan atau sudah dikembalikan.");
             }
         }
 

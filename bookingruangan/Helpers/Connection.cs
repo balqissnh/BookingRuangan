@@ -1,6 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 
-namespace bookingruangan
+namespace bookingruangan.Helpers
 {
     public class Connection
     {
