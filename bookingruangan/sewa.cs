@@ -2,7 +2,6 @@
 using System.Windows.Forms;
 using bookingruangan.Controllers;
 using bookingruangan.Models;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace bookingruangan
 {
@@ -25,7 +24,8 @@ namespace bookingruangan
             listView1.Columns.Add("ID", 50);
             listView1.Columns.Add("Nama Ruangan", 200);
             listView1.Columns.Add("Jenis", 150);
-            listView1.Columns.Add("Kapasitas", 150);
+            listView1.Columns.Add("Kapasitas", 100);
+            listView1.Columns.Add("Status", 100); // Tambahkan kolom status
 
             _controller.LoadDataRuangan(listView1);
         }
@@ -36,7 +36,9 @@ namespace bookingruangan
             string jenis = textBox2.Text.Trim();
             string kapasitas = textBox3.Text.Trim();
 
-            if (!string.IsNullOrWhiteSpace(nama) && !string.IsNullOrWhiteSpace(jenis) && !string.IsNullOrWhiteSpace(kapasitas))
+            if (!string.IsNullOrWhiteSpace(nama) &&
+                !string.IsNullOrWhiteSpace(jenis) &&
+                !string.IsNullOrWhiteSpace(kapasitas))
             {
                 try
                 {
@@ -57,18 +59,19 @@ namespace bookingruangan
         {
             if (listView1.SelectedItems.Count == 0)
             {
-                MessageBox.Show("Pilih data yang ingin diedit.", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Pilih data yang ingin diedit.");
                 return;
             }
 
             try
             {
-                _controller.UpdateRuang(listView1.SelectedItems[0], textBox1.Text, textBox2.Text, textBox3.Text);
-                MessageBox.Show("Data berhasil diperbarui.", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string status = listView1.SelectedItems[0].SubItems[4].Text; // Ambil status dari listView
+                _controller.UpdateRuang(listView1.SelectedItems[0], textBox1.Text, textBox2.Text, textBox3.Text, status);
+                MessageBox.Show("Data berhasil diperbarui.");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: " + ex.Message);
             }
         }
 
@@ -76,18 +79,18 @@ namespace bookingruangan
         {
             if (listView1.SelectedItems.Count == 0)
             {
-                MessageBox.Show("Pilih data yang ingin dihapus.", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Pilih data yang ingin dihapus.");
                 return;
             }
 
             try
             {
                 _controller.HapusRuang(listView1.SelectedItems[0], listView1);
-                MessageBox.Show("Data berhasil dihapus.", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Data berhasil dihapus.");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: " + ex.Message);
             }
         }
 
@@ -95,10 +98,11 @@ namespace bookingruangan
         {
             if (listView1.SelectedItems.Count > 0)
             {
-                var selectedItem = listView1.SelectedItems[0];
-                textBox1.Text = selectedItem.SubItems[1].Text;
-                textBox2.Text = selectedItem.SubItems[2].Text;
-                textBox3.Text = selectedItem.SubItems[3].Text;
+                var item = listView1.SelectedItems[0];
+                textBox1.Text = item.SubItems[1].Text;
+                textBox2.Text = item.SubItems[2].Text;
+                textBox3.Text = item.SubItems[3].Text;
+                // textBox4.Text = item.SubItems[4].Text; // Tambahkan jika ingin edit status manual
             }
         }
     }

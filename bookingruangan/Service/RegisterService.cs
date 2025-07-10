@@ -1,27 +1,38 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using bookingruangan.Models;
 using bookingruangan.Helpers;
 using MySql.Data.MySqlClient;
 
-namespace bookingruangan.Models
+namespace bookingruangan.Services
 {
-    public class LoginServiceUser
+    public class RegisterService
     {
-        public static bool Authenticate(string username, string password)
+        public static bool Register(RegisterModel user)
         {
-            string hashedPassword = HashPassword(password);
+            string hashedPassword = HashPassword(user.Password);
 
             using (var conn = Connection.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT COUNT(*) FROM anggota WHERE username=@username AND password=@password";
+                string query = @"INSERT INTO anggota (nama_lengkap, npm, username, password)
+                                 VALUES (@nama, @npm, @username, @password)";
                 using (var cmd = new MySqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@nama", user.NamaLengkap);
+                    cmd.Parameters.AddWithValue("@npm", user.NPM);
+                    cmd.Parameters.AddWithValue("@username", user.Username);
                     cmd.Parameters.AddWithValue("@password", hashedPassword);
 
-                    int count = Convert.ToInt32(cmd.ExecuteScalar());
-                    return count > 0;
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                        return true;
+                    }
+                    catch (MySqlException)
+                    {
+                        return false;
+                    }
                 }
             }
         }
